@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<center>
+<head>
+    <meta charset="UTF-8">
+    <title>정답을 확인하세요.</title>
+</head>
+<body>
+<h1>정답을 확인하세요.</h1>
+<h2 th:text="${msg}" style="color:red">메시지 표시 영역</h2>
+<a th:href="@{/quiz/play}">다음 문제</a><br>
+<a th:href="@{/quiz}">CRUD 화면에 돌아가기</a>
+</center>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<center>
+    <head>
+        <meta charset="UTF-8">
+        <title>넌센스 퀴즈를 풀어보세요.</title>
+    </head>
+    <body>
+    <h1>넌센스 퀴즈를 풀어보세요.</h1>
+    <h3>퀴즈</h3>
+    <h4>남은 시간: <span id="timer">30</span>초</h4>
+    <th:block th:if="${msg}">
+        <p th:text="${msg}" style="color:red"></p>
+        <a th:href="@{/quiz/}">CRUD 화면에 돌아가기</a>
+    </th:block>
+    <th:block th:unless="${msg}">
+        <p th:text="${quizForm.question}">퀴즈 내용</p>
+        <form th:action="@{/quiz/check}" th:object="${quizForm}" method="POST">
+            <input type="hidden" th:field="*{id}">
+            <input type="text" name="answer">
+        </form>
+    </th:block>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>타이머 예제</title>
+    </head>
+    <body>
+
+    <form id="quizForm" action="/quiz/check" method="POST">
+        <!-- 퀴즈 폼 내용 -->
+    </form>
+
+    <script type="text/javascript">
+  var timerElement = document.getElementById('timer');
+  var seconds = 30;
+  var timerId;
+  var quizSubmitted = false;
+  var startTime, endTime; // 추가된 변수
+
+  function startTimer() {
+    startTime = new Date(); // 타이머 시작 시간 저장
+
+    timerId = setInterval(function() {
+      seconds--;
+      timerElement.textContent = seconds;
+
+      if (seconds <= 0) {
+        clearInterval(timerId);
+        if (!quizSubmitted) {
+          submitForm();
+        }
+      }
+    }, 1000);
+  }
+
+  function submitForm() {
+    endTime = new Date(); // 타이머 종료 시간 저장
+    quizSubmitted = true;
+    document.getElementById('quizForm').submit();
+  }
+
+  document.getElementById('quizForm').addEventListener('submit', function() {
+    clearInterval(timerId);
+    endTime = new Date(); // 타이머 종료 시간 저장
+    quizSubmitted = true;
+  });
+
+  startTimer();
+
+  // 타이머 종료 시 페이지 이동 및 시간 표시
+  function redirectToEndPage() {
+    var totalSeconds = Math.floor((endTime - startTime) / 1000); // 총 걸린 시간 계산
+    window.location.href = "end?time=" + totalSeconds; // end 페이지로 이동하며 시간 전달
+  }
+
+  setTimeout(redirectToEndPage, seconds * 1000);
+</script>
+</center>
+</body>
+</html>
